@@ -20,7 +20,20 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         cache: maven
+        
     - name: Build with Maven
       run: mvn package
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ancelotow/booklib:$(date +%s)
+      
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ancelotow
+        password: 6a7c170d-104c-4da0-92be-3eb4b693f596
+      
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ancelotow/booklib
+      
+    
