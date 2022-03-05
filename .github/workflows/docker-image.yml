@@ -24,22 +24,21 @@ jobs:
     - name: Build with Maven
       run: mvn package
       
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
-      
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-      
-    - name: Login to DockerHub
-      uses: docker/login-action@v1 
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
       with:
         username: ancelotow
         password: 6a7c170d-104c-4da0-92be-3eb4b693f596
+        
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
       
-    - name: Build and push Docker image
+    - name: Build and push
       uses: docker/build-push-action@v2
       with:
+        context: .
+        file: ./Dockerfile
         push: true
-        tags: ancelotow/booklib
+        tags: ancelotow/booklib:latest
       
     
