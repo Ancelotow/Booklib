@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  app:
+    image: 'ancelotow/booklib:latest'
+    build:
+      context: .
+    container_name: app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  db:
+    ports:
+      - "5438:5432"
+    image: postgres:10.10
+    restart: always
+    volumes:
+      - /shared_folder/postgresql:/var/lib/postgresql
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  db-init-scripts:
